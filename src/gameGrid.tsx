@@ -1,32 +1,17 @@
-import React, { useState } from 'react';
+import React from 'react';
 
-import GridColumn from './gridColumn';
+import GridRow from './gridRow';
 
-interface AppState {
-  gameGrid: number[][];
-}
-
-const GameGrid = () => {
-  const [state] = useState<AppState>({
-    gameGrid: [
-      [1, 2, 3, 4, 5, 6, 7],
-      [1, 2, 3, 4, 5, 6, 7],
-      [1, 2, 3, 4, 5, 6, 7],
-      [0, 0, 0, 0, 0, 0, 0],
-      [1, 2, 3, 4, 5, 6, 7],
-      [1, 2, 3, 4, 5, 6, 7],
-      [1, 2, 3, 4, 5, 6, 7],
-    ],
-  });
+const GameGrid: React.FC<{ gameGrid: number[][] }> = ({ gameGrid }) => {
   return (
     <div className="gameGrid">
-      <GridColumn columnState={state.gameGrid[0]} />
-      <GridColumn columnState={state.gameGrid[1]} />
-      <GridColumn columnState={state.gameGrid[2]} />
-      <GridColumn columnState={state.gameGrid[3]} />
-      <GridColumn columnState={state.gameGrid[4]} />
-      <GridColumn columnState={state.gameGrid[5]} />
-      <GridColumn columnState={state.gameGrid[6]} />
+      <GridRow rowState={gameGrid[0]} />
+      <GridRow rowState={gameGrid[1]} />
+      <GridRow rowState={gameGrid[2]} />
+      <GridRow rowState={gameGrid[3]} />
+      <GridRow rowState={gameGrid[4]} />
+      <GridRow rowState={gameGrid[5]} />
+      <GridRow rowState={gameGrid[6]} />
     </div>
   );
 };

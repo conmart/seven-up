@@ -14,16 +14,37 @@ code {
 
 .gameGrid {
   display: flex;
+  flex-direction: column;
 }
 
 .gridRow {
   display: flex;
-  flex-direction: column;
 }
 
 .gridSquare {
   background-color: black;
+  height: 4rem;
+  width: 4rem;
+  border: 1px solid white;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.gameBall {
+  border: 2px solid blue;
   height: 3rem;
   width: 3rem;
-  border: 1px solid white;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.ball0 {
+  display: none;
+}
+
+.nextBallContainer {
+  padding: 2rem;
 }
