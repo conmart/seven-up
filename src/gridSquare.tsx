@@ -1,7 +1,7 @@
 import React from 'react';
 
-const GridSquare = () => {
-  return <div className="gridSquare"></div>;
+const GridSquare: React.FC<{ squareValue: number }> = ({ squareValue }) => {
+  return <div className="gridSquare">{squareValue}</div>;
 };
 
 export default GridSquare;
