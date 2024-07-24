@@ -11,3 +11,14 @@ code {
   font-family: source-code-pro, Menlo, Monaco, Consolas, 'Courier New',
     monospace;
 }
+
+.gridRow {
+  display: flex;
+}
+
+.gridSquare {
+  background-color: black;
+  height: 3rem;
+  width: 3rem;
+  border: 1px solid white;
+}
