@@ -28,7 +28,7 @@ function App() {
     const nextOpenSquare = updatedGameGrid[columnIndex].findIndex(
       (element) => element === 0
     );
-    if (Number.isInteger(nextOpenSquare)) {
+    if (nextOpenSquare >= 0 && nextOpenSquare < 8) {
       updatedGameGrid[columnIndex][nextOpenSquare] = state.nextBallValue;
       const newBall = Math.floor(Math.random() * 7) + 1
       setState({ gameGrid: updatedGameGrid, nextBallValue: newBall })

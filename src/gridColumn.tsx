@@ -8,10 +8,7 @@ const GridColumn: React.FC<{
   shootBall: (column: number) => any;
 }> = ({ columnState, columnIndex, shootBall }) => {
   return (
-    <div
-      className="gridColumn"
-      onClick={() => shootBall(columnIndex)}
-    >
+    <div className="gridColumn" onClick={() => shootBall(columnIndex)}>
       {columnState.map((value, index) => (
         <GridSquare key={index} squareValue={value} />
       ))}

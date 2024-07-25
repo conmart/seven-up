@@ -32,7 +32,7 @@ code {
 }
 
 .gameBall {
-  border: 2px solid blue;
+  border: 2px solid white;
   height: 3rem;
   width: 3rem;
   border-radius: 50%;
@@ -44,6 +44,35 @@ code {
 .ball0 {
   display: none;
 }
+
+.ball1 {
+  background-color: #0F4C5C;
+}
+
+.ball2 {
+  background-color: #761C54;
+}
+
+.ball3 {
+  background-color: #900030;
+}
+
+.ball4 {
+  background-color: #008C17;
+}
+
+.ball5 {
+  background-color: #a16f03;
+}
+
+.ball6 {
+  background-color: #0f8b7f;
+}
+
+.ball7 {
+  background-color: #540ea4;
+}
+
 
 .nextBallContainer {
   padding: 2rem;

@@ -1,7 +1,7 @@
 import React from 'react';
 
 const GridSquare: React.FC<{ squareValue: number }> = ({ squareValue }) => {
-  const ballClass = `gameBall ball${squareValue}`
+  const ballClass = `gameBall ball${squareValue}`;
 
   return (
     <div className="gridSquare">
