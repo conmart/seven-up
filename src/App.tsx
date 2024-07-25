@@ -10,22 +10,35 @@ interface AppState {
 }
 
 function App() {
-  const [state] = useState<AppState>({
+  const [state, setState] = useState<AppState>({
     gameGrid: [
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [1, 2, 3, 4, 5, 6, 7],
-      [1, 2, 3, 4, 5, 6, 7],
-      [1, 2, 3, 4, 5, 6, 7],
+      [1, 2, 3, 0, 0, 0, 0],
+      [1, 2, 3, 0, 0, 0, 0],
+      [1, 2, 3, 0, 0, 0, 0],
+      [1, 2, 3, 0, 0, 0, 0],
+      [1, 2, 3, 0, 0, 0, 0],
+      [1, 2, 3, 0, 0, 0, 0],
+      [1, 2, 3, 0, 0, 0, 0],
     ],
     nextBallValue: 5,
   });
+
+  const shootBall = (columnIndex: number) => {
+    let updatedGameGrid = state.gameGrid
+    const nextOpenSquare = updatedGameGrid[columnIndex].findIndex(
+      (element) => element === 0
+    );
+    if (Number.isInteger(nextOpenSquare)) {
+      updatedGameGrid[columnIndex][nextOpenSquare] = state.nextBallValue;
+      const newBall = Math.floor(Math.random() * 7) + 1
+      setState({ gameGrid: updatedGameGrid, nextBallValue: newBall })
+    }
+  }
+
   return (
     <div className="App">
       <header className="App-header">
-        <GameGrid gameGrid={state.gameGrid} />
+        <GameGrid gameGrid={state.gameGrid} shootBall={shootBall} />
         <NextBall value={state.nextBallValue} />
       </header>
     </div>

@@ -1,17 +1,21 @@
 import React from 'react';
 
-import GridRow from './gridRow';
+import GridColumn from './gridColumn';
 
-const GameGrid: React.FC<{ gameGrid: number[][] }> = ({ gameGrid }) => {
+const GameGrid: React.FC<{
+  gameGrid: number[][];
+  shootBall: (column: number) => any;
+}> = ({ gameGrid, shootBall }) => {
   return (
     <div className="gameGrid">
-      <GridRow rowState={gameGrid[0]} />
-      <GridRow rowState={gameGrid[1]} />
-      <GridRow rowState={gameGrid[2]} />
-      <GridRow rowState={gameGrid[3]} />
-      <GridRow rowState={gameGrid[4]} />
-      <GridRow rowState={gameGrid[5]} />
-      <GridRow rowState={gameGrid[6]} />
+      {gameGrid.map((column, index) => (
+        <GridColumn
+          columnState={column}
+          columnIndex={index}
+          key={index}
+          shootBall={shootBall}
+        />
+      ))}
     </div>
   );
 };

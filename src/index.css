@@ -14,11 +14,11 @@ code {
 
 .gameGrid {
   display: flex;
-  flex-direction: column;
 }
 
-.gridRow {
+.gridColumn {
   display: flex;
+  flex-direction: column;
 }
 
 .gridSquare {
