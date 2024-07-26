@@ -46,11 +46,11 @@ code {
 }
 
 .ball1 {
-  background-color: #0F4C5C;
+  background-color: #0f4c5c;
 }
 
 .ball2 {
-  background-color: #761C54;
+  background-color: #761c54;
 }
 
 .ball3 {
@@ -58,7 +58,7 @@ code {
 }
 
 .ball4 {
-  background-color: #008C17;
+  background-color: #008c17;
 }
 
 .ball5 {
@@ -73,7 +73,15 @@ code {
   background-color: #540ea4;
 }
 
+.ball8 {
+  background-color: gray;
+  color: gray;
+}
+
+.ball9 {
+  background-color: white;
+}
 
 .nextBallContainer {
-  padding: 2rem;
+  padding-top: 4rem;
 }
