@@ -12,6 +12,14 @@ code {
     monospace;
 }
 
+.levelContainer {
+  display: flex;
+  justify-content: space-between;
+  width: 459px;
+  margin: 0 auto;
+  padding: 1rem;
+}
+
 .gameGrid {
   display: flex;
 }
@@ -29,6 +37,7 @@ code {
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
 }
 
 .gameBall {
@@ -83,5 +92,5 @@ code {
 }
 
 .nextBallContainer {
-  padding-top: 4rem;
+  padding-top: 2rem;
 }
