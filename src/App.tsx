@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { randomBallValue, processExplosions, nextZero } from './utils';
 import './App.css';
 
 import GameGrid from './components/gameGrid';
@@ -31,15 +32,13 @@ function App() {
   });
 
   const shootBall = (columnIndex: number) => {
+    let turnScore = 0;
     let updatedGameGrid = state.gameGrid;
-    const nextOpenSquare = updatedGameGrid[columnIndex].findIndex(
-      (element) => element === 0
-    );
+    const nextOpenSquare = nextZero(updatedGameGrid[columnIndex]);
     if (nextOpenSquare >= 0 && nextOpenSquare < 8) {
       updatedGameGrid[columnIndex][nextOpenSquare] = state.nextBallValue;
-      const newBall = Math.floor(Math.random() * 7) + 1;
-      // TODO: Fix
-      const turnScore = 7;
+      updatedGameGrid = processExplosions(updatedGameGrid);
+      const newBall = randomBallValue();
       const newLevel = state.turnsLeft < 2;
       setState((prev) => ({
         gameGrid: updatedGameGrid,
