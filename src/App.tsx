@@ -25,7 +25,7 @@ function App() {
       [9, 0, 0, 0, 0, 0, 0],
       [9, 0, 0, 0, 0, 0, 0],
     ],
-    nextBallValue: 5,
+    nextBallValue: randomBallValue(),
     score: 0,
     level: 1,
     turnsLeft: 5,
