@@ -1,4 +1,5 @@
 let explosionCoordinates = new Set<number[]>();
+let ballsToExplode: { [key: number]: number[] } = {};
 let gameGrid: number[][] = [];
 
 const checkExplosionsColumn = (column: number[], columnIndex: number) => {
@@ -13,18 +14,31 @@ const checkExplosionsColumn = (column: number[], columnIndex: number) => {
 };
 
 const explodeBlock = (column: number, row: number) => {
-  console.log(column, row, 'yo');
   if (column > -1 && column < 7 && row > -1 && row < 7) {
     const currentValue = gameGrid[column][row];
     if (currentValue === 8) {
       gameGrid[column][row] = randomBallValue();
-    } else if (currentValue===9) {
-      gameGrid[column][row] = 8
+    } else if (currentValue === 9) {
+      gameGrid[column][row] = 8;
     }
   }
 };
 
-const explodeSurroundingBlocks = () => {
+const removeFromColumn = (column: number, rows: number[]) => {
+  const rowsToRemove = new Set<number>(rows);
+  let newRow: number[] = [];
+  gameGrid[column].forEach((row, index) => {
+    if (!rowsToRemove.has(index)) {
+      newRow.push(row);
+    }
+  });
+  while (newRow.length < 7) {
+    newRow.push(0);
+  }
+  gameGrid[column] = newRow;
+};
+
+const explodeBlocks = () => {
   explosionCoordinates.forEach((coordinate) => {
     const column = coordinate[0];
     const row = coordinate[1];
@@ -32,8 +46,24 @@ const explodeSurroundingBlocks = () => {
     explodeBlock(column + 1, row);
     explodeBlock(column, row - 1);
     explodeBlock(column, row + 1);
+    if (!ballsToExplode[column]) {
+      ballsToExplode[column] = [row];
+    } else {
+      ballsToExplode[column].push(row);
+    }
   });
+  Object.entries(ballsToExplode).forEach(([column, rows]) => {
+    removeFromColumn(parseInt(column), rows);
+  });
+};
+
+const cleanup = () => {
+  const explosionsHappened = explosionCoordinates.size > 0;
   explosionCoordinates.clear();
+  ballsToExplode = {};
+  if (explosionsHappened) {
+    processExplosions(gameGrid);
+  }
 };
 
 export const processExplosions = (gameGridFromState: number[][]) => {
@@ -41,9 +71,8 @@ export const processExplosions = (gameGridFromState: number[][]) => {
   gameGridFromState.forEach((column, index) =>
     checkExplosionsColumn(column, index)
   );
-  console.log(explosionCoordinates);
-  console.log(gameGrid);
-  explodeSurroundingBlocks();
+  explodeBlocks();
+  cleanup();
   return gameGrid;
 };
 

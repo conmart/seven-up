@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { randomBallValue, processExplosions, nextZero } from './utils';
+import { randomBallValue, processExplosions, nextZero } from './turnLogic';
 import './App.css';
 
 import GameGrid from './components/gameGrid';
