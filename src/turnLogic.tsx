@@ -21,13 +21,11 @@ const checkExplosionsRow = (
   if (row.length === 0) {
     return;
   }
-  console.log(row, columnStart, rowIndex, 'exploderow');
   row.forEach((value, index) => {
     if (value === row.length) {
       explosionCoordinates.add([columnStart + index, rowIndex]);
     }
   });
-  console.log(explosionCoordinates);
 };
 
 const explodeBlock = (column: number, row: number) => {
@@ -74,16 +72,9 @@ const explodeBlocks = () => {
   });
 };
 
-const cleanup = () => {
-  const explosionsHappened = explosionCoordinates.size > 0;
-  explosionCoordinates.clear();
-  ballsToExplode = {};
-  if (explosionsHappened) {
-    processExplosions(gameGrid);
-  }
-};
-
-export const processExplosions = (gameGridFromState: number[][]) => {
+export const processExplosions = (
+  gameGridFromState: number[][]
+): [number[][], number] => {
   gameGrid = gameGridFromState;
   gameGrid.forEach((column, index) => checkExplosionsColumn(column, index));
   let subRow: number[] = [];
@@ -97,11 +88,27 @@ export const processExplosions = (gameGridFromState: number[][]) => {
       }
     }
     checkExplosionsRow(subRow, 7 - subRow.length, r);
-    subRow = []
+    subRow = [];
   }
+  const explosionCount: number = explosionCoordinates.size;
   explodeBlocks();
-  cleanup();
-  return gameGrid;
+  explosionCoordinates.clear();
+  ballsToExplode = {};
+  return [gameGrid, explosionCount];
+};
+
+export const newLevel = (gameGrid: number[][]): [number[][], boolean] => {
+  let gameOver = false;
+  gameGrid.forEach((column) => {
+    let columnFull = nextZero(column) === -1;
+    if (columnFull) {
+      gameOver = true;
+    } else {
+      column.unshift(9);
+      column.pop();
+    }
+  });
+  return [gameGrid, gameOver];
 };
 
 export const randomBallValue = () => {

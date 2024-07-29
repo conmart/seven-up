@@ -1,5 +1,10 @@
 import React, { useState } from 'react';
-import { randomBallValue, processExplosions, nextZero } from './turnLogic';
+import {
+  randomBallValue,
+  processExplosions,
+  newLevel,
+  nextZero,
+} from './turnLogic';
 import './App.css';
 
 import GameGrid from './components/gameGrid';
@@ -12,6 +17,9 @@ interface GameState {
   score: number;
   level: number;
   turnsLeft: number;
+  combo: number;
+  processingTurn: boolean;
+  gameOver: boolean;
 }
 
 function App() {
@@ -29,24 +37,65 @@ function App() {
     score: 0,
     level: 1,
     turnsLeft: 5,
+    combo: 1,
+    processingTurn: false,
+    gameOver: false,
   });
 
-  const shootBall = (columnIndex: number) => {
-    let turnScore = 0;
-    let updatedGameGrid = state.gameGrid;
-    const nextOpenSquare = nextZero(updatedGameGrid[columnIndex]);
-    if (nextOpenSquare >= 0 && nextOpenSquare < 8) {
-      updatedGameGrid[columnIndex][nextOpenSquare] = state.nextBallValue;
-      updatedGameGrid = processExplosions(updatedGameGrid);
-      const newBall = randomBallValue();
-      const newLevel = state.turnsLeft < 2;
+  const newTurn = (gameGrid: number[][]) => {
+    let updatedGameGrid = gameGrid;
+    let gameOver = state.gameOver;
+    const levelChange = state.turnsLeft < 2;
+    if (levelChange) {
+      [updatedGameGrid, gameOver] = newLevel(gameGrid);
+    }
+    setState((prev) => ({
+      gameGrid: updatedGameGrid,
+      nextBallValue: gameOver ? 0 : randomBallValue(),
+      score: prev.score,
+      level: levelChange ? prev.level + 1 : prev.level,
+      turnsLeft: levelChange ? 5 : prev.turnsLeft - 1,
+      combo: prev.combo,
+      processingTurn: levelChange,
+      gameOver,
+    }));
+    // if (levelChange) {
+    //   console.log('level changed')
+    //   // processTurn(updatedGameGrid);
+    // }
+  };
+
+  const processTurn = (gameGrid: number[][]) => {
+    let [updatedGameGrid, explosionCount] = processExplosions(gameGrid);
+    const sameTurn = explosionCount > 0;
+    if (sameTurn) {
       setState((prev) => ({
         gameGrid: updatedGameGrid,
-        nextBallValue: newBall,
-        score: prev.score + turnScore,
-        level: newLevel ? prev.level + 1 : prev.level,
-        turnsLeft: newLevel ? 5 : prev.turnsLeft - 1,
+        nextBallValue: 0,
+        score: prev.score + state.combo * 7 * explosionCount,
+        level: prev.level,
+        turnsLeft: prev.turnsLeft,
+        combo: prev.combo + 1,
+        processingTurn: true,
+        gameOver: false,
       }));
+      setTimeout(() => {
+        console.log('delay');
+        processTurn(gameGrid);
+      }, 1000);
+    } else {
+      newTurn(gameGrid);
+    }
+  };
+
+  const shootBall = (columnIndex: number) => {
+    if (!state.processingTurn) {
+      let updatedGameGrid = state.gameGrid;
+      const nextOpenSquare = nextZero(updatedGameGrid[columnIndex]);
+      if (nextOpenSquare >= 0 && nextOpenSquare < 8) {
+        updatedGameGrid[columnIndex][nextOpenSquare] = state.nextBallValue;
+        processTurn(updatedGameGrid);
+      }
     }
   };
 
