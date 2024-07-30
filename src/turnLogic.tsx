@@ -97,10 +97,12 @@ export const processExplosions = (
   return [gameGrid, explosionCount];
 };
 
-export const newLevel = (gameGrid: number[][]): [number[][], boolean] => {
+export const addBlockRow = (gameGrid: number[][]): [number[][], boolean] => {
   let gameOver = false;
   gameGrid.forEach((column) => {
+    console.log(column);
     let columnFull = nextZero(column) === -1;
+    console.log(columnFull);
     if (columnFull) {
       gameOver = true;
     } else {

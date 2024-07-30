@@ -1,8 +1,8 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import {
   randomBallValue,
   processExplosions,
-  newLevel,
+  addBlockRow,
   nextZero,
 } from './turnLogic';
 import './App.css';
@@ -18,8 +18,9 @@ interface GameState {
   level: number;
   turnsLeft: number;
   combo: number;
-  processingTurn: boolean;
+  checkForMoreExplosions: boolean;
   gameOver: boolean;
+  turnInProgress: boolean;
 }
 
 function App() {
@@ -38,63 +39,74 @@ function App() {
     level: 1,
     turnsLeft: 5,
     combo: 1,
-    processingTurn: false,
+    checkForMoreExplosions: false,
     gameOver: false,
+    turnInProgress: false,
   });
 
-  const newTurn = (gameGrid: number[][]) => {
-    let updatedGameGrid = gameGrid;
-    let gameOver = state.gameOver;
-    const levelChange = state.turnsLeft < 2;
-    if (levelChange) {
-      [updatedGameGrid, gameOver] = newLevel(gameGrid);
+  useEffect(() => {
+    if (state.gameOver) {
+      console.log('game is over');
+    } else if (state.checkForMoreExplosions) {
+      setTimeout(() => {
+        processTurn();
+      }, 300);
+    } else if (state.turnInProgress) {
+      endTurn();
     }
+  });
+
+  const newLevel = () => {
+    const [updatedGameGrid, gameOver] = addBlockRow([...state.gameGrid]);
     setState((prev) => ({
+      ...prev,
       gameGrid: updatedGameGrid,
-      nextBallValue: gameOver ? 0 : randomBallValue(),
-      score: prev.score,
-      level: levelChange ? prev.level + 1 : prev.level,
-      turnsLeft: levelChange ? 5 : prev.turnsLeft - 1,
-      combo: prev.combo,
-      processingTurn: levelChange,
+      level: prev.level + 1,
+      turnsLeft: 5,
+      checkForMoreExplosions: true,
       gameOver,
     }));
-    // if (levelChange) {
-    //   console.log('level changed')
-    //   // processTurn(updatedGameGrid);
-    // }
   };
 
-  const processTurn = (gameGrid: number[][]) => {
-    let [updatedGameGrid, explosionCount] = processExplosions(gameGrid);
-    const sameTurn = explosionCount > 0;
-    if (sameTurn) {
-      setState((prev) => ({
-        gameGrid: updatedGameGrid,
-        nextBallValue: 0,
-        score: prev.score + state.combo * 7 * explosionCount,
-        level: prev.level,
-        turnsLeft: prev.turnsLeft,
-        combo: prev.combo + 1,
-        processingTurn: true,
-        gameOver: false,
-      }));
-      setTimeout(() => {
-        console.log('delay');
-        processTurn(gameGrid);
-      }, 1000);
+  const endTurn = () => {
+    if (state.turnsLeft < 1) {
+      newLevel();
     } else {
-      newTurn(gameGrid);
+      setState((prev) => ({
+        ...prev,
+        nextBallValue: state.gameOver ? 0 : randomBallValue(),
+        combo: 1,
+        turnInProgress: false,
+      }));
     }
+  };
+
+  const processTurn = () => {
+    let [updatedGameGrid, explosionCount] = processExplosions([
+      ...state.gameGrid,
+    ]);
+    setState((prev) => ({
+      ...prev,
+      gameGrid: updatedGameGrid,
+      score: prev.score + state.combo * 7 * explosionCount,
+      checkForMoreExplosions: explosionCount > 0,
+    }));
   };
 
   const shootBall = (columnIndex: number) => {
-    if (!state.processingTurn) {
-      let updatedGameGrid = state.gameGrid;
+    if (!state.turnInProgress) {
+      let updatedGameGrid = [...state.gameGrid];
       const nextOpenSquare = nextZero(updatedGameGrid[columnIndex]);
       if (nextOpenSquare >= 0 && nextOpenSquare < 8) {
         updatedGameGrid[columnIndex][nextOpenSquare] = state.nextBallValue;
-        processTurn(updatedGameGrid);
+        setState((prev) => ({
+          ...prev,
+          gameGrid: updatedGameGrid,
+          turnsLeft: prev.turnsLeft - 1,
+          checkForMoreExplosions: true,
+          turnInProgress: true,
+          nextBallValue: 0,
+        }));
       }
     }
   };
@@ -107,7 +119,7 @@ function App() {
           level={state.level}
           turnsLeft={state.turnsLeft}
         />
-        <GameGrid gameGrid={state.gameGrid} shootBall={shootBall} />
+        <GameGrid gameGrid={[...state.gameGrid]} shootBall={shootBall} />
         <NextBall value={state.nextBallValue} />
       </header>
     </div>
