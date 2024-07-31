@@ -12,12 +12,24 @@ code {
     monospace;
 }
 
+.gameBoard {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  width: 28rem;
+  max-width: 92%;
+  padding: 1rem 0;
+}
+
+.scoreBoard {
+  width: 100%;
+}
+
 .levelContainer {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 459px;
-  margin: 0 auto;
   padding: 1rem;
 }
 
@@ -41,32 +53,33 @@ code {
 
 .gameGrid {
   display: flex;
+  width: 100%;
 }
 
 .gridColumn {
   display: flex;
   flex-direction: column;
+  flex: 1;
 }
 
 .gridSquare {
   background-color: black;
-  height: 4rem;
-  width: 4rem;
   border: 1px solid white;
   display: flex;
   justify-content: center;
   align-items: center;
   cursor: pointer;
+  aspect-ratio: 1;
 }
 
 .gameBall {
   border: 2px solid white;
-  height: 3rem;
-  width: 3rem;
+  width: 90%;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
+  aspect-ratio: 1;
 }
 
 .ball0 {
@@ -113,4 +126,5 @@ code {
 .nextBallContainer {
   padding-top: 2rem;
   height: 4rem;
+  width: 4rem;
 }
