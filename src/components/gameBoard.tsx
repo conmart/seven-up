@@ -10,6 +10,7 @@ import {
 import GameGrid from './gameGrid';
 import NextBall from './nextBall';
 import ScoreBoard from './scoreboard';
+import EndGame from './endGame';
 
 interface GameState {
   gameGrid: number[][];
@@ -122,6 +123,7 @@ const GameBoard = () => {
       />
       <GameGrid gameGrid={[...state.gameGrid]} shootBall={shootBall} />
       <NextBall value={state.nextBallValue} />
+      {state.gameOver && <EndGame />}
     </div>
   );
 };

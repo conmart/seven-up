@@ -128,3 +128,18 @@ code {
   height: 4rem;
   width: 4rem;
 }
+
+.endGame {
+  font-size: 55px;
+  position: absolute;
+  color: red;
+  height: 6rem;
+  background-color: rgba(0, 0, 0, 0.7);
+  width: 45rem;
+  max-width: 100%;
+  border-top: 3px solid;
+  border-bottom: 3px solid;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
