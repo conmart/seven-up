@@ -100,12 +100,10 @@ export const processExplosions = (
 export const addBlockRow = (gameGrid: number[][]): [number[][], boolean] => {
   let gameOver = false;
   gameGrid.forEach((column) => {
-    console.log(column);
     let columnFull = nextZero(column) === -1;
-    console.log(columnFull);
     if (columnFull) {
       gameOver = true;
-    } else {
+    } else if (!gameOver) {
       column.unshift(9);
       column.pop();
     }
@@ -119,4 +117,14 @@ export const randomBallValue = () => {
 
 export const nextZero = (gridColumn: number[]) => {
   return gridColumn.findIndex((element) => element === 0);
+};
+
+export const calcMultiplier = (combo: number): number => {
+  let multiplier = 7;
+  let start = 2;
+  while (start <= combo) {
+    multiplier = Math.round(multiplier * (3 - 0.1 * combo));
+    start++;
+  }
+  return multiplier;
 };

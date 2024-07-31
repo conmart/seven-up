@@ -15,9 +15,28 @@ code {
 .levelContainer {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   width: 459px;
   margin: 0 auto;
   padding: 1rem;
+}
+
+.turnsLeft {
+  display: flex;
+  justify-content: right;
+  align-items: center;
+}
+
+.turnsLeftIcon {
+  height: 1rem;
+  width: 1rem;
+  background-color: white;
+  transform: rotate(45deg);
+  margin-left: 10px;
+}
+
+.lastTurn {
+  background-color: #d86b35;
 }
 
 .gameGrid {

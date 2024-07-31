@@ -5,13 +5,17 @@ const ScoreBoard: React.FC<{
   level: number;
   turnsLeft: number;
 }> = ({ score, level, turnsLeft }) => {
+  let visualTurns = [];
+  const tlClass = turnsLeft === 1 ? "turnsLeftIcon lastTurn" : "turnsLeftIcon"
+  for (let i = 0; i < turnsLeft; i++) {
+    visualTurns.push(<div className={tlClass} key={i}></div>);
+  }
   return (
     <div className="scoreBoard">
       <div className="score">{score}</div>
       <div className="levelContainer">
         <div className="level">Level: {level}</div>
-        {/* TODO: make turnsLeft it's own component */}
-        <div className="turnsLeft">{turnsLeft}</div>
+        <div className="turnsLeft">{visualTurns}</div>
       </div>
     </div>
   );

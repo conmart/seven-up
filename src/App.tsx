@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+  calcMultiplier,
   randomBallValue,
   processExplosions,
   addBlockRow,
@@ -61,6 +62,7 @@ function App() {
     setState((prev) => ({
       ...prev,
       gameGrid: updatedGameGrid,
+      score: prev.score + 10000,
       level: prev.level + 1,
       turnsLeft: 5,
       checkForMoreExplosions: true,
@@ -88,7 +90,8 @@ function App() {
     setState((prev) => ({
       ...prev,
       gameGrid: updatedGameGrid,
-      score: prev.score + state.combo * 7 * explosionCount,
+      score: prev.score + explosionCount * calcMultiplier(state.combo),
+      combo: prev.combo + 1,
       checkForMoreExplosions: explosionCount > 0,
     }));
   };
