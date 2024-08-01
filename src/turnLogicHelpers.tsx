@@ -1,3 +1,5 @@
+import { nextZero, randomBallValue } from "./utils";
+
 let explosionCoordinates = new Set<number[]>();
 let ballsToExplode: { [key: number]: number[] } = {};
 let gameGrid: number[][] = [];
@@ -109,14 +111,6 @@ export const addBlockRow = (gameGrid: number[][]): [number[][], boolean] => {
     }
   });
   return [gameGrid, gameOver];
-};
-
-export const randomBallValue = () => {
-  return Math.floor(Math.random() * 7) + 1;
-};
-
-export const nextZero = (gridColumn: number[]) => {
-  return gridColumn.findIndex((element) => element === 0);
 };
 
 export const calcMultiplier = (combo: number): number => {

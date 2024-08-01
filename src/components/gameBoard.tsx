@@ -1,11 +1,15 @@
 import React, { useState, useEffect } from 'react';
 import {
   calcMultiplier,
-  randomBallValue,
   processExplosions,
   addBlockRow,
+} from '../turnLogicHelpers';
+import {
   nextZero,
-} from '../turnLogic';
+  randomBallValue,
+  newGameState,
+  deepCopyGameGrid,
+} from '../utils';
 
 import GameGrid from './gameGrid';
 import NextBall from './nextBall';
@@ -25,29 +29,10 @@ interface GameState {
 }
 
 const GameBoard = () => {
-  const [state, setState] = useState<GameState>({
-    gameGrid: [
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-      [0, 0, 0, 0, 0, 0, 0],
-    ],
-    nextBallValue: randomBallValue(),
-    score: 0,
-    level: 1,
-    turnsLeft: 5,
-    combo: 1,
-    checkForMoreExplosions: false,
-    gameOver: false,
-    turnInProgress: false,
-  });
+  const [state, setState] = useState<GameState>({ ...newGameState });
 
   useEffect(() => {
     if (state.gameOver) {
-      console.log('game is over');
     } else if (state.checkForMoreExplosions) {
       setTimeout(() => {
         processTurn();
@@ -58,7 +43,9 @@ const GameBoard = () => {
   });
 
   const newLevel = () => {
-    const [updatedGameGrid, gameOver] = addBlockRow([...state.gameGrid]);
+    const [updatedGameGrid, gameOver] = addBlockRow(
+      deepCopyGameGrid(state.gameGrid)
+    );
     setState((prev) => ({
       ...prev,
       gameGrid: updatedGameGrid,
@@ -84,9 +71,9 @@ const GameBoard = () => {
   };
 
   const processTurn = () => {
-    let [updatedGameGrid, explosionCount] = processExplosions([
-      ...state.gameGrid,
-    ]);
+    let [updatedGameGrid, explosionCount] = processExplosions(
+      deepCopyGameGrid(state.gameGrid)
+    );
     setState((prev) => ({
       ...prev,
       gameGrid: updatedGameGrid,
@@ -98,7 +85,7 @@ const GameBoard = () => {
 
   const shootBall = (columnIndex: number) => {
     if (!state.turnInProgress) {
-      let updatedGameGrid = [...state.gameGrid];
+      let updatedGameGrid = deepCopyGameGrid(state.gameGrid);
       const nextOpenSquare = nextZero(updatedGameGrid[columnIndex]);
       if (nextOpenSquare >= 0 && nextOpenSquare < 8) {
         updatedGameGrid[columnIndex][nextOpenSquare] = state.nextBallValue;
@@ -114,6 +101,10 @@ const GameBoard = () => {
     }
   };
 
+  const newGame = () => {
+    setState(() => newGameState);
+  };
+
   return (
     <div className="gameBoard">
       <ScoreBoard
@@ -121,9 +112,9 @@ const GameBoard = () => {
         level={state.level}
         turnsLeft={state.turnsLeft}
       />
-      <GameGrid gameGrid={[...state.gameGrid]} shootBall={shootBall} />
+      <GameGrid gameGrid={state.gameGrid} shootBall={shootBall} />
       <NextBall value={state.nextBallValue} />
-      {state.gameOver && <EndGame />}
+      {state.gameOver && <EndGame newGame={newGame} />}
     </div>
   );
 };

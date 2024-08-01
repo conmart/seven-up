@@ -133,13 +133,20 @@ code {
   font-size: 55px;
   position: absolute;
   color: red;
-  height: 6rem;
+  height: 12rem;
   background-color: rgba(0, 0, 0, 0.7);
   width: 45rem;
   max-width: 100%;
   border-top: 3px solid;
   border-bottom: 3px solid;
   display: flex;
-  justify-content: center;
+  justify-content: space-evenly;
   align-items: center;
+  flex-direction: column;
+}
+
+.newGame {
+  cursor: pointer;
+  padding: 1rem;
+  font-size: large;
 }
