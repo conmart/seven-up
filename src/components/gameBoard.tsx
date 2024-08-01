@@ -3,6 +3,7 @@ import {
   calcMultiplier,
   processExplosions,
   addBlockRow,
+  checkForFullGrid,
 } from '../turnLogicHelpers';
 import {
   nextZero,
@@ -61,11 +62,13 @@ const GameBoard = () => {
     if (state.turnsLeft < 1) {
       newLevel();
     } else {
+      const gameOver = checkForFullGrid(state.gameGrid);
       setState((prev) => ({
         ...prev,
-        nextBallValue: state.gameOver ? 0 : randomBallValue(),
+        nextBallValue: gameOver ? 0 : randomBallValue(),
         combo: 1,
         turnInProgress: false,
+        gameOver,
       }));
     }
   };
