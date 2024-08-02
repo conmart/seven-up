@@ -1,0 +1,15 @@
+{
+  "files": {
+    "main.css": "/seven-up/static/css/main.d1ec11bb.css",
+    "main.js": "/seven-up/static/js/main.dbc5d69e.js",
+    "static/js/453.42c9f958.chunk.js": "/seven-up/static/js/453.42c9f958.chunk.js",
+    "index.html": "/seven-up/index.html",
+    "main.d1ec11bb.css.map": "/seven-up/static/css/main.d1ec11bb.css.map",
+    "main.dbc5d69e.js.map": "/seven-up/static/js/main.dbc5d69e.js.map",
+    "453.42c9f958.chunk.js.map": "/seven-up/static/js/453.42c9f958.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/css/main.d1ec11bb.css",
+    "static/js/main.dbc5d69e.js"
+  ]
+}
