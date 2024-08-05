@@ -4,18 +4,18 @@ import {
   processExplosions,
   addBlockRow,
   checkForFullGrid,
-} from '../turnLogicHelpers';
-import {
   nextZero,
   randomBallValue,
   newGameState,
   deepCopyGameGrid,
-} from '../utils';
+  generateStartSeed,
+} from '../turnLogicHelpers';
 
 import GameGrid from './gameGrid';
 import NextBall from './nextBall';
 import ScoreBoard from './scoreboard';
 import EndGame from './endGame';
+import GameMenu from './gameMenu';
 
 interface GameState {
   gameGrid: number[][];
@@ -52,7 +52,7 @@ const GameBoard = () => {
       gameGrid: updatedGameGrid,
       score: prev.score + 10000,
       level: prev.level + 1,
-      turnsLeft: 5,
+      turnsLeft: newGameState['turnsLeft'],
       checkForMoreExplosions: true,
       gameOver,
     }));
@@ -105,11 +105,12 @@ const GameBoard = () => {
   };
 
   const newGame = () => {
-    setState(() => newGameState);
+    setState(() => ({ ...newGameState, gameGrid: generateStartSeed() }));
   };
 
   return (
     <div className="gameBoard">
+      <GameMenu newGame={newGame} />
       <ScoreBoard
         score={state.score}
         level={state.level}

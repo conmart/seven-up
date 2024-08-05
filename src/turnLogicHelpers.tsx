@@ -1,5 +1,3 @@
-import { nextZero, randomBallValue } from './utils';
-
 let explosionCoordinates = new Set<number[]>();
 let ballsToExplode: { [key: number]: number[] } = {};
 let gameGrid: number[][] = [];
@@ -131,4 +129,58 @@ export const checkForFullGrid = (gameGrid: number[][]): boolean => {
     }
   });
   return gridFull;
+};
+
+export const nextZero = (gridColumn: number[]) => {
+  return gridColumn.findIndex((element) => element === 0);
+};
+
+export const randomBallValue = () => {
+  return Math.floor(Math.random() * 7) + 1;
+};
+
+const emptyGameGrid = [
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+  [0, 0, 0, 0, 0, 0, 0],
+];
+
+export const deepCopyGameGrid = (gameGrid: number[][]) => {
+  let gameGridCopy: number[][] = [];
+  gameGrid.forEach((column) => gameGridCopy.push([...column]));
+  return gameGridCopy;
+};
+
+export const generateStartSeed = () => {
+  let newGameGrid = deepCopyGameGrid(emptyGameGrid);
+  for (let i = 0; i < 15; i++) {
+    const column = Math.floor(Math.random() * 7);
+    let availableSlot = nextZero(newGameGrid[column]);
+    newGameGrid[column][availableSlot] = randomBallValue();
+  }
+  let explosionCount = 1;
+  while (explosionCount > 0) {
+    [newGameGrid, explosionCount] = processExplosions(newGameGrid);
+  }
+  return newGameGrid;
+};
+
+export const newGameState = {
+  gameGrid: generateStartSeed(),
+  nextBallValue: randomBallValue(),
+  score: 0,
+  level: 1,
+  turnsLeft: 5,
+  combo: 1,
+  checkForMoreExplosions: false,
+  gameOver: false,
+  turnInProgress: false,
+};
+
+export const numberWithCommas = (num: number) => {
+  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
