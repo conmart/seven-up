@@ -17,15 +17,17 @@ const GameMenu: React.FC<{ newGame: () => any }> = ({ newGame }) => {
         <Fragment>
           <div className="menuBackground" onClick={toggleMenu}></div>
           <div className="menuContainer">
-            <h3>Menu</h3>
-            <button className="newGame" onClick={() => {
-              newGame()
-              toggleMenu()
-            }}>
+            <button
+              className="newGame"
+              onClick={() => {
+                newGame();
+                toggleMenu();
+              }}
+            >
               New Game
             </button>
             <button className="closeMenu" onClick={toggleMenu}>
-              Close Menu
+              Close
             </button>
           </div>
         </Fragment>

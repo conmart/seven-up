@@ -150,7 +150,7 @@ code {
   flex-direction: column;
 }
 
-.newGame {
+button {
   cursor: pointer;
   padding: 1rem;
   font-size: large;
@@ -178,14 +178,18 @@ code {
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.8);
+  z-index: 2;
 }
 
 .menuContainer {
   position: absolute;
   display: flex;
   flex-direction: column;
-  height: 50%;
+  height: 40%;
   width: 50%;
   background-color: black;
   padding: 1rem;
+  z-index: 2;
+  border: 3px solid;
+  justify-content: space-evenly;
 }
