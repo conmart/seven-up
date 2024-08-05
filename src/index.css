@@ -193,3 +193,8 @@ button {
   border: 3px solid;
   justify-content: space-evenly;
 }
+
+.columnFull .gridSquare {
+  border-color: rgb(138, 12, 12);
+  background-color: rgb(138, 12, 12);
+}

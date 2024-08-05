@@ -27,6 +27,7 @@ interface GameState {
   checkForMoreExplosions: boolean;
   gameOver: boolean;
   turnInProgress: boolean;
+  fullColumns: number[];
 }
 
 const GameBoard = () => {
@@ -44,17 +45,18 @@ const GameBoard = () => {
   });
 
   const newLevel = () => {
-    const [updatedGameGrid, gameOver] = addBlockRow(
+    const [updatedGameGrid, gameOver, fullColumns] = addBlockRow(
       deepCopyGameGrid(state.gameGrid)
     );
     setState((prev) => ({
       ...prev,
-      gameGrid: updatedGameGrid,
+      gameGrid: gameOver ? prev.gameGrid : updatedGameGrid,
       score: prev.score + 10000,
       level: prev.level + 1,
       turnsLeft: newGameState['turnsLeft'],
       checkForMoreExplosions: true,
       gameOver,
+      fullColumns,
     }));
   };
 
@@ -116,7 +118,11 @@ const GameBoard = () => {
         level={state.level}
         turnsLeft={state.turnsLeft}
       />
-      <GameGrid gameGrid={state.gameGrid} shootBall={shootBall} />
+      <GameGrid
+        gameGrid={state.gameGrid}
+        shootBall={shootBall}
+        fullColumns={state.fullColumns}
+      />
       <NextBall value={state.nextBallValue} />
       {state.gameOver && <EndGame newGame={newGame} />}
     </div>

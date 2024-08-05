@@ -1,5 +1,5 @@
 import React from 'react';
-import { numberWithCommas } from '../turnLogicHelpers';
+import { numberWithCommas } from '../utils';
 
 const ScoreBoard: React.FC<{
   score: number;

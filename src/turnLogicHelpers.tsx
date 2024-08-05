@@ -97,18 +97,22 @@ export const processExplosions = (
   return [gameGrid, explosionCount];
 };
 
-export const addBlockRow = (gameGrid: number[][]): [number[][], boolean] => {
+export const addBlockRow = (
+  gameGrid: number[][]
+): [number[][], boolean, number[]] => {
   let gameOver = false;
-  gameGrid.forEach((column) => {
+  let fullColumns: number[] = [];
+  gameGrid.forEach((column, index) => {
     let columnFull = nextZero(column) === -1;
     if (columnFull) {
       gameOver = true;
+      fullColumns.push(index);
     } else if (!gameOver) {
       column.unshift(9);
       column.pop();
     }
   });
-  return [gameGrid, gameOver];
+  return [gameGrid, gameOver, fullColumns];
 };
 
 export const calcMultiplier = (combo: number): number => {
@@ -179,8 +183,5 @@ export const newGameState = {
   checkForMoreExplosions: false,
   gameOver: false,
   turnInProgress: false,
-};
-
-export const numberWithCommas = (num: number) => {
-  return num.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
+  fullColumns: [],
 };

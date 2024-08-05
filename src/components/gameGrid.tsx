@@ -5,7 +5,8 @@ import GridColumn from './gridColumn';
 const GameGrid: React.FC<{
   gameGrid: number[][];
   shootBall: (column: number) => any;
-}> = ({ gameGrid, shootBall }) => {
+  fullColumns: number[];
+}> = ({ gameGrid, shootBall, fullColumns }) => {
   return (
     <div className="gameGrid">
       {gameGrid.map((column, index) => (
@@ -14,6 +15,7 @@ const GameGrid: React.FC<{
           columnIndex={index}
           key={index}
           shootBall={shootBall}
+          columnFull={fullColumns.includes(index)}
         />
       ))}
     </div>

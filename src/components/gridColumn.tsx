@@ -6,9 +6,11 @@ const GridColumn: React.FC<{
   columnState: number[];
   columnIndex: number;
   shootBall: (column: number) => any;
-}> = ({ columnState, columnIndex, shootBall }) => {
+  columnFull: boolean;
+}> = ({ columnState, columnIndex, shootBall, columnFull }) => {
+  const columnClass = columnFull ? 'gridColumn columnFull' : 'gridColumn';
   return (
-    <div className="gridColumn" onClick={() => shootBall(columnIndex)}>
+    <div className={columnClass} onClick={() => shootBall(columnIndex)}>
       {columnState.map((value, index) => (
         <GridSquare key={index} squareValue={value} />
       ))}
