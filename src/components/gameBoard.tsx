@@ -1,15 +1,14 @@
 import React, { useState, useEffect } from 'react';
 import {
   calcMultiplier,
-  processExplosions,
   addBlockRow,
   checkForFullGrid,
-  nextZero,
-  randomBallValue,
   newGameState,
-  deepCopyGameGrid,
   generateStartSeed,
 } from '../turnLogicHelpers';
+
+import { deepCopyGameGrid, nextZero, randomBallValue } from '../utils';
+import { processExplosions } from '../explosionHelpers';
 
 import GameGrid from './gameGrid';
 import NextBall from './nextBall';
@@ -33,16 +32,17 @@ interface GameState {
 const GameBoard = () => {
   const [state, setState] = useState<GameState>({ ...newGameState });
 
+  useEffect(() => newGame(), []);
+
   useEffect(() => {
-    if (state.gameOver) {
-    } else if (state.checkForMoreExplosions) {
+    if (state.checkForMoreExplosions) {
       setTimeout(() => {
         processTurn();
       }, 300);
     } else if (state.turnInProgress) {
       endTurn();
     }
-  });
+  },);
 
   const newLevel = () => {
     const [updatedGameGrid, gameOver, fullColumns] = addBlockRow(
@@ -68,7 +68,7 @@ const GameBoard = () => {
       setState((prev) => ({
         ...prev,
         nextBallValue: gameOver ? 0 : randomBallValue(),
-        combo: 1,
+        combo: newGameState['combo'],
         turnInProgress: false,
         gameOver,
       }));
@@ -107,7 +107,11 @@ const GameBoard = () => {
   };
 
   const newGame = () => {
-    setState(() => ({ ...newGameState, gameGrid: generateStartSeed() }));
+    setState(() => ({
+      ...newGameState,
+      gameGrid: generateStartSeed(),
+      nextBallValue: randomBallValue(),
+    }));
   };
 
   return (
