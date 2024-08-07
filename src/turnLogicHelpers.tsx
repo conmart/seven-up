@@ -46,7 +46,7 @@ export const calcMultiplier = (combo: number): number => {
   let multiplier = 7;
   let start = 2;
   while (start <= combo) {
-    multiplier = Math.round(multiplier * (4 - 0.1 * combo));
+    multiplier = Math.round(multiplier * Math.max(3.5 - 0.2 * combo, 1.5));
     start++;
   }
   return multiplier;
@@ -62,7 +62,7 @@ export const checkForFullGrid = (gameGrid: number[][]): boolean => {
   return gridFull;
 };
 
-export const generateStartSeed = () => {
+export const generateStartSeed = (): number[][] => {
   let newGameGrid = deepCopyGameGrid(emptyGameGrid);
   for (let i = 0; i < 15; i++) {
     const column = Math.floor(Math.random() * 7);
@@ -74,4 +74,19 @@ export const generateStartSeed = () => {
     [newGameGrid, explosionCount] = processExplosions(newGameGrid);
   }
   return newGameGrid;
+};
+
+export const validShot = (
+  gameGrid: number[][],
+  nextBall: number,
+  column: number
+): [number[][], boolean] => {
+  let updatedGameGrid = deepCopyGameGrid(gameGrid);
+  let valid = false;
+  const nextOpenSquare = nextZero(gameGrid[column]);
+  if (nextOpenSquare >= 0 && nextOpenSquare < 8) {
+    updatedGameGrid[column][nextOpenSquare] = nextBall;
+    valid = true;
+  }
+  return [updatedGameGrid, valid];
 };

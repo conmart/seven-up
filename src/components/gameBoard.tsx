@@ -5,9 +5,10 @@ import {
   checkForFullGrid,
   newGameState,
   generateStartSeed,
+  validShot,
 } from '../turnLogicHelpers';
 
-import { deepCopyGameGrid, nextZero, randomBallValue } from '../utils';
+import { deepCopyGameGrid, randomBallValue } from '../utils';
 import { processExplosions } from '../explosionHelpers';
 
 import GameGrid from './gameGrid';
@@ -42,7 +43,7 @@ const GameBoard = () => {
     } else if (state.turnInProgress) {
       endTurn();
     }
-  },);
+  });
 
   const newLevel = () => {
     const [updatedGameGrid, gameOver, fullColumns] = addBlockRow(
@@ -88,21 +89,18 @@ const GameBoard = () => {
     }));
   };
 
-  const shootBall = (columnIndex: number) => {
-    if (!state.turnInProgress) {
-      let updatedGameGrid = deepCopyGameGrid(state.gameGrid);
-      const nextOpenSquare = nextZero(updatedGameGrid[columnIndex]);
-      if (nextOpenSquare >= 0 && nextOpenSquare < 8) {
-        updatedGameGrid[columnIndex][nextOpenSquare] = state.nextBallValue;
-        setState((prev) => ({
-          ...prev,
-          gameGrid: updatedGameGrid,
-          turnsLeft: prev.turnsLeft - 1,
-          checkForMoreExplosions: true,
-          turnInProgress: true,
-          nextBallValue: 0,
-        }));
-      }
+  const shootBall = (column: number) => {
+    const { gameGrid, nextBallValue, turnInProgress } = state;
+    const [updatedGameGrid, valid] = validShot(gameGrid, nextBallValue, column);
+    if (valid && !turnInProgress) {
+      setState((prev) => ({
+        ...prev,
+        gameGrid: updatedGameGrid,
+        turnsLeft: prev.turnsLeft - 1,
+        checkForMoreExplosions: true,
+        turnInProgress: true,
+        nextBallValue: 0,
+      }));
     }
   };
 
