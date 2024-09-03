@@ -5,17 +5,26 @@ const ScoreBoard: React.FC<{
   score: number;
   level: number;
   turnsLeft: number;
-}> = ({ score, level, turnsLeft }) => {
+  combo: number;
+}> = ({ score, level, turnsLeft, combo }) => {
   let visualTurns = [];
-  const tlClass = turnsLeft === 1 ? "turnsLeftIcon lastTurn" : "turnsLeftIcon"
+  const turnsLeftClass =
+    turnsLeft === 1 ? 'turnsLeftIcon lastTurn' : 'turnsLeftIcon';
   for (let i = 0; i < turnsLeft; i++) {
-    visualTurns.push(<div className={tlClass} key={i}></div>);
+    visualTurns.push(<div className={turnsLeftClass} key={i}></div>);
   }
+
+  let visualCombo = 'Combo!';
+  for (let i = 3; i < combo; i++) {
+    visualCombo = 'C-' + visualCombo;
+  }
+
   return (
     <div className="scoreBoard">
       <div className="score">{numberWithCommas(score)}</div>
       <div className="levelContainer">
         <div className="level">Level: {level}</div>
+        {combo > 2 && <div className="combo">{visualCombo}</div>}
         <div className="turnsLeft">{visualTurns}</div>
       </div>
     </div>

@@ -42,6 +42,7 @@ code {
   display: flex;
   justify-content: right;
   align-items: center;
+  height: 20px;
 }
 
 .turnsLeftIcon {
@@ -55,6 +56,11 @@ code {
 .lastTurn {
   background-color: #d86b35;
 }
+
+/* .combo, .level {
+  height: 25px;
+  padding: 5px;
+} */
 
 .gameGrid {
   display: flex;
@@ -198,3 +204,24 @@ button {
   border-color: rgb(138, 12, 12);
   background-color: rgb(138, 12, 12);
 }
+
+@media (max-width: 375px) {
+  .levelContainer {
+    flex-direction: column;
+  }
+
+  .level {
+    padding: 7px;
+  }
+
+  .turnsLeft {
+    justify-content: center;
+    padding-right: 10px;
+  }
+
+  .combo {
+    position: absolute;
+    top: 55px;
+  }
+}
+

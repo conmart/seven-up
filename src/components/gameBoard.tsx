@@ -40,7 +40,7 @@ const GameBoard = () => {
     if (state.checkForMoreExplosions) {
       setTimeout(() => {
         processTurn();
-      }, 300);
+      }, 350);
     } else if (state.turnInProgress) {
       endTurn();
     }
@@ -82,12 +82,13 @@ const GameBoard = () => {
     let [updatedGameGrid, explosionCount] = processExplosions(
       deepCopyGameGrid(state.gameGrid)
     );
+    const moreExplosions = explosionCount > 0;
     setState((prev) => ({
       ...prev,
       gameGrid: updatedGameGrid,
       score: prev.score + explosionCount * calcMultiplier(state.combo),
-      combo: prev.combo + 1,
-      checkForMoreExplosions: explosionCount > 0,
+      combo: moreExplosions ? prev.combo + 1 : prev.combo,
+      checkForMoreExplosions: moreExplosions,
     }));
   };
 
@@ -102,6 +103,7 @@ const GameBoard = () => {
         checkForMoreExplosions: true,
         turnInProgress: true,
         nextBallValue: 0,
+        lastNumber: nextBallValue,
       }));
     }
   };
@@ -121,6 +123,7 @@ const GameBoard = () => {
         score={state.score}
         level={state.level}
         turnsLeft={state.turnsLeft}
+        combo={state.combo}
       />
       <GameGrid
         gameGrid={state.gameGrid}
