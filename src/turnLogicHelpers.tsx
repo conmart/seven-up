@@ -22,6 +22,7 @@ export const newGameState = {
   gameOver: false,
   turnInProgress: false,
   fullColumns: [],
+  lastNumber: 0,
 };
 
 export const addBlockRow = (

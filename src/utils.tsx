@@ -6,8 +6,12 @@ export const nextZero = (gridColumn: number[]) => {
   return gridColumn.findIndex((element) => element === 0);
 };
 
-export const randomBallValue = () => {
-  return Math.floor(Math.random() * 7) + 1;
+export const randomBallValue = (prevValue: number = 0) => {
+  let newValue = prevValue
+  while (newValue === prevValue) {
+    newValue = Math.floor(Math.random() * 7) + 1;
+  }
+  return newValue;
 };
 
 export const deepCopyGameGrid = (gameGrid: number[][]) => {

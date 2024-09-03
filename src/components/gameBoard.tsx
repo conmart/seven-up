@@ -28,6 +28,7 @@ interface GameState {
   gameOver: boolean;
   turnInProgress: boolean;
   fullColumns: number[];
+  lastNumber: number;
 }
 
 const GameBoard = () => {
@@ -58,6 +59,7 @@ const GameBoard = () => {
       checkForMoreExplosions: true,
       gameOver,
       fullColumns,
+      lastNumber: newGameState['lastNumber'],
     }));
   };
 
@@ -68,7 +70,7 @@ const GameBoard = () => {
       const gameOver = checkForFullGrid(state.gameGrid);
       setState((prev) => ({
         ...prev,
-        nextBallValue: gameOver ? 0 : randomBallValue(),
+        nextBallValue: gameOver ? 0 : randomBallValue(state.lastNumber),
         combo: newGameState['combo'],
         turnInProgress: false,
         gameOver,
