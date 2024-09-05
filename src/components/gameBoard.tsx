@@ -67,7 +67,7 @@ const GameBoard = () => {
     if (state.turnsLeft < 1) {
       newLevel();
     } else {
-      const gameOver = checkForFullGrid(state.gameGrid);
+      const gameOver = state.gameOver || checkForFullGrid(state.gameGrid);
       setState((prev) => ({
         ...prev,
         nextBallValue: gameOver ? 0 : randomBallValue(state.lastNumber),
@@ -93,9 +93,9 @@ const GameBoard = () => {
   };
 
   const shootBall = (column: number) => {
-    const { gameGrid, nextBallValue, turnInProgress } = state;
+    const { gameGrid, nextBallValue, turnInProgress, gameOver } = state;
     const [updatedGameGrid, valid] = validShot(gameGrid, nextBallValue, column);
-    if (valid && !turnInProgress) {
+    if (valid && !turnInProgress && !gameOver) {
       setState((prev) => ({
         ...prev,
         gameGrid: updatedGameGrid,

@@ -57,11 +57,6 @@ code {
   background-color: #d86b35;
 }
 
-/* .combo, .level {
-  height: 25px;
-  padding: 5px;
-} */
-
 .gameGrid {
   display: flex;
   width: 100%;
