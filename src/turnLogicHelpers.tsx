@@ -23,6 +23,7 @@ export const newGameState = {
   turnInProgress: false,
   fullColumns: [],
   lastNumber: 0,
+  highestCombo: 0,
 };
 
 export const addBlockRow = (

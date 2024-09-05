@@ -29,6 +29,7 @@ interface GameState {
   turnInProgress: boolean;
   fullColumns: number[];
   lastNumber: number;
+  highestCombo: number;
 }
 
 const GameBoard = () => {
@@ -74,6 +75,7 @@ const GameBoard = () => {
         combo: newGameState['combo'],
         turnInProgress: false,
         gameOver,
+        highestCombo: Math.max(prev.highestCombo, state.combo),
       }));
     }
   };
@@ -131,7 +133,9 @@ const GameBoard = () => {
         fullColumns={state.fullColumns}
       />
       <NextBall value={state.nextBallValue} />
-      {state.gameOver && <EndGame newGame={newGame} />}
+      {state.gameOver && (
+        <EndGame newGame={newGame} highestCombo={state.highestCombo} />
+      )}
     </div>
   );
 };
